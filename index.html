@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriNova | AI-Powered Autonomous Agricultural Robot</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .section-fade {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .section-fade.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-[#F5F7F5]">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-emerald-100/50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="navbar-brand">
+                <img src="assets/images/Logo.png" 
+                     alt="AgriNova Logo" 
+                     class="navbar-logo">
+                <span class="text-2xl font-bold text-primary tracking-tighter">AgriNova</span>
+            </div>
+
+            <div id="auth-nav" class="flex items-center">
+                <a href="login.html" class="navbar-login-btn">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-[85vh] flex items-center py-20 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+            <div class="animate-fade-up">
+                <span class="badge badge-green mb-6">AI & Autonomous Robotics</span>
+                <h1 class="text-6xl lg:text-7xl font-extrabold text-slate-900 leading-[1.05] tracking-tighter mb-8">
+                    Smart Farming, <br><span class="text-primary">Powered by AgriNova</span>
+                </h1>
+                <p class="text-xl text-slate-500 mb-10 max-w-lg leading-relaxed font-medium">
+                    AgriNova is an autonomous agricultural robot designed for real-time environmental monitoring, plant health detection, computer vision, and AI-based farming decision support.
+                </p>
+                <div class="flex flex-wrap items-center gap-5">
+                    <button id="view-dashboard-btn" class="btn-primary">
+                        <i data-lucide="layout-dashboard" size="20"></i>
+                        View Dashboard
+                    </button>
+                    <a href="#why-agrinova" class="btn-outline">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+            
+            <div class="relative animate-fade-up" style="animation-delay: 0.2s">
+                <div class="rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white bg-slate-100 group">
+                    <img src="assets/images/AgriNovaMainPhoto.jpeg" 
+                         alt="AgriNova autonomous agricultural monitoring robot" 
+                         class="w-full h-[500px] object-cover object-center display-block rounded-inherit transition-transform duration-500 group-hover:scale-105">
+                </div>
+                <div class="absolute -bottom-10 -right-10 w-64 h-64 bg-primary/10 rounded-full blur-3xl -z-10"></div>
+                <div class="absolute top-10 -left-10 w-40 h-40 bg-emerald-300/20 rounded-full blur-3xl -z-10"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem & Solution Section -->
+    <section id="why-agrinova" class="py-24 bg-white section-fade">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl font-bold text-slate-900">Why AgriNova is Needed</h2>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- The Problem -->
+                <div class="card p-10 border-l-8 border-red-500 bg-red-50/30">
+                    <div class="w-12 h-12 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center mb-6">
+                        <i data-lucide="alert-triangle"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-6 uppercase tracking-tight">The Problem</h3>
+                    <ul class="space-y-4 text-slate-600 font-medium">
+                        <li class="flex gap-3"><i data-lucide="x-circle" class="text-red-400 shrink-0" size="18"></i> Manual monitoring is slow, inconsistent, and error-prone.</li>
+                        <li class="flex gap-3"><i data-lucide="x-circle" class="text-red-400 shrink-0" size="18"></i> Lack of real-time environmental and plant health data.</li>
+                        <li class="flex gap-3"><i data-lucide="x-circle" class="text-red-400 shrink-0" size="18"></i> Static sensors only monitor a single fixed location.</li>
+                        <li class="flex gap-3"><i data-lucide="x-circle" class="text-red-400 shrink-0" size="18"></i> Drones cannot inspect plants at detail at ground level.</li>
+                        <li class="flex gap-3"><i data-lucide="x-circle" class="text-red-400 shrink-0" size="18"></i> Existing robotics are expensive and focus only on automation.</li>
+                        <li class="flex gap-3"><i data-lucide="x-circle" class="text-red-400 shrink-0" size="18"></i> Raw data without AI insights leads to reactive decisions.</li>
+                    </ul>
+                </div>
+                <!-- The Solution -->
+                <div class="card p-10 border-l-8 border-emerald-500 bg-emerald-50/30">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mb-6">
+                        <i data-lucide="check-circle"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-6 uppercase tracking-tight">The AgriNova Solution</h3>
+                    <ul class="space-y-4 text-slate-600 font-medium">
+                        <li class="flex gap-3"><i data-lucide="check-circle-2" class="text-emerald-500 shrink-0" size="18"></i> Low-cost autonomous field monitoring platform.</li>
+                        <li class="flex gap-3"><i data-lucide="check-circle-2" class="text-emerald-500 shrink-0" size="18"></i> Real-time collection of environment, soil, and vision data.</li>
+                        <li class="flex gap-3"><i data-lucide="check-circle-2" class="text-emerald-500 shrink-0" size="18"></i> Onboard AI identifies health conditions using computer vision.</li>
+                        <li class="flex gap-3"><i data-lucide="check-circle-2" class="text-emerald-500 shrink-0" size="18"></i> Live synchronization with Firebase for remote monitoring.</li>
+                        <li class="flex gap-3"><i data-lucide="check-circle-2" class="text-emerald-500 shrink-0" size="18"></i> AI-based reports, alerts, and farming recommendations.</li>
+                        <li class="flex gap-3"><i data-lucide="check-circle-2" class="text-emerald-500 shrink-0" size="18"></i> Hybrid system integration of mobility, sensing, and cloud.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Challenges Section -->
+    <section class="py-24 bg-[#F8FAF8] section-fade">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">Challenges in Modern Farming</h2>
+                <p class="text-slate-500 max-w-3xl mx-auto font-medium">Agriculture faces real monitoring and decision-making bottlenecks that manual observation alone cannot solve efficiently.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card card-hover p-8">
+                    <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-primary mb-6"><i data-lucide="user-x" size="20"></i></div>
+                    <h4 class="text-lg font-bold text-slate-900 mb-3">Manual Inconsistency</h4>
+                    <p class="text-sm text-slate-500 leading-relaxed">Human crop inspection is slow, irregular, and may miss early disease or stress signs.</p>
+                </div>
+                <div class="card card-hover p-8">
+                    <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-primary mb-6"><i data-lucide="eye-off" size="20"></i></div>
+                    <h4 class="text-lg font-bold text-slate-900 mb-3">Real-Time Data Blind Spots</h4>
+                    <p class="text-sm text-slate-500 leading-relaxed">Farmers often lack live environment, soil, and plant health data for proactive decisions.</p>
+                </div>
+                <div class="card card-hover p-8">
+                    <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-primary mb-6"><i data-lucide="dollar-sign" size="20"></i></div>
+                    <h4 class="text-lg font-bold text-slate-900 mb-3">High Entry Bar</h4>
+                    <p class="text-sm text-slate-500 leading-relaxed">Existing agricultural robots are often too expensive or complex for local farms.</p>
+                </div>
+                <div class="card card-hover p-8">
+                    <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-primary mb-6"><i data-lucide="map-pin-off" size="20"></i></div>
+                    <h4 class="text-lg font-bold text-slate-900 mb-3">Static Sensor Limitation</h4>
+                    <p class="text-sm text-slate-500 leading-relaxed">Fixed IoT sensors only monitor one location and cannot inspect areas dynamically.</p>
+                </div>
+                <div class="card card-hover p-8">
+                    <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-primary mb-6"><i data-lucide="camera-off" size="20"></i></div>
+                    <h4 class="text-lg font-bold text-slate-900 mb-3">Ground-Level Gap</h4>
+                    <p class="text-sm text-slate-500 leading-relaxed">Drone systems provide aerial views but cannot capture detailed plant-level information.</p>
+                </div>
+                <div class="card card-hover p-8">
+                    <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-primary mb-6"><i data-lucide="brain-circuit" size="20"></i></div>
+                    <h4 class="text-lg font-bold text-slate-900 mb-3">Lack of AI Analysis</h4>
+                    <p class="text-sm text-slate-500 leading-relaxed">Many systems collect raw sensor data only, without intelligent risk prediction.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core System Modules -->
+    <section id="system-overview" class="py-24 bg-white section-fade">
+        <div class="max-w-[1400px] mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-slate-900 mb-4">Core System Modules</h2>
+                <p class="text-slate-500 font-medium">A modular approach to intelligent farming hardware and software.</p>
+            </div>
+            <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div class="card card-hover p-6 border-slate-100">
+                    <i data-lucide="truck" class="text-primary mb-4"></i>
+                    <h5 class="font-bold text-slate-900 mb-2">Mechanical Unit</h5>
+                    <p class="text-xs text-slate-500 leading-relaxed">4WD vehicle platform supporting manual, auto, and human-following modes.</p>
+                </div>
+                <div class="card card-hover p-6 border-slate-100">
+                    <i data-lucide="thermometer" class="text-primary mb-4"></i>
+                    <h5 class="font-bold text-slate-900 mb-2">Environment Unit</h5>
+                    <p class="text-xs text-slate-500 leading-relaxed">Multi-sensor node for air/soil telemetry, rainfall, and GPS coordinates.</p>
+                </div>
+                <div class="card card-hover p-6 border-slate-100">
+                    <i data-lucide="leaf" class="text-primary mb-4"></i>
+                    <h5 class="font-bold text-slate-900 mb-2">Plant Health Unit</h5>
+                    <p class="text-xs text-slate-500 leading-relaxed">AI classification unit identifying health status, stress, and confidence.</p>
+                </div>
+                <div class="card card-hover p-6 border-slate-100">
+                    <i data-lucide="sparkles" class="text-primary mb-4"></i>
+                    <h5 class="font-bold text-slate-900 mb-2">AI Analysis Layer</h5>
+                    <p class="text-xs text-slate-500 leading-relaxed">High-level insights, risk level generation, and predictive recommendations.</p>
+                </div>
+                <div class="card card-hover p-6 border-slate-100">
+                    <i data-lucide="database" class="text-primary mb-4"></i>
+                    <h5 class="font-bold text-slate-900 mb-2">Firebase Backend</h5>
+                    <p class="text-xs text-slate-500 leading-relaxed">Real-time DB sync and Firestore historical archiving for reporting.</p>
+                </div>
+                <div class="card card-hover p-6 border-slate-100">
+                    <i data-lucide="radio" class="text-primary mb-4"></i>
+                    <h5 class="font-bold text-slate-900 mb-2">Ground Station</h5>
+                    <p class="text-xs text-slate-500 leading-relaxed">LoRa/Wi-Fi bridge between robot units and cloud synchronization.</p>
+                </div>
+                <div class="card card-hover p-6 border-slate-100">
+                    <i data-lucide="cpu" class="text-primary mb-4"></i>
+                    <h5 class="font-bold text-slate-900 mb-2">Edge AI Development</h5>
+                    <p class="text-xs text-slate-500 leading-relaxed">TensorFlow Lite onboard inference for instant plant classification.</p>
+                </div>
+                <div class="card card-hover p-6 border-slate-100">
+                    <i data-lucide="scan-eye" class="text-primary mb-4"></i>
+                    <h5 class="font-bold text-slate-900 mb-2">Computer Vision</h5>
+                    <p class="text-xs text-slate-500 leading-relaxed">Camera-based detection for obstacle safety and plant inspection.</p>
+                </div>
+                <div class="card card-hover p-6 border-slate-100">
+                    <i data-lucide="monitor" class="text-primary mb-4"></i>
+                    <h5 class="font-bold text-slate-900 mb-2">On-Device Monitoring</h5>
+                    <p class="text-xs text-slate-500 leading-relaxed">Local Raspberry Pi / ESP32 status updates before cloud uplink.</p>
+                </div>
+                <div class="card card-hover p-6 border-slate-100">
+                    <i data-lucide="globe" class="text-primary mb-4"></i>
+                    <h5 class="font-bold text-slate-900 mb-2">Remote Monitoring</h5>
+                    <p class="text-xs text-slate-500 leading-relaxed">Universal access to farm data via web and mobile interfaces.</p>
+                </div>
+                <div class="card card-hover p-6 border-slate-100">
+                    <i data-lucide="shield-check" class="text-primary mb-4"></i>
+                    <h5 class="font-bold text-slate-900 mb-2">Safety System</h5>
+                    <p class="text-xs text-slate-500 leading-relaxed">Real-time obstacle detection and emergency stop protocols.</p>
+                </div>
+                <div class="card card-hover p-6 border-slate-100">
+                    <i data-lucide="navigation" class="text-primary mb-4"></i>
+                    <h5 class="font-bold text-slate-900 mb-2">Autonomous Vehicle</h5>
+                    <p class="text-xs text-slate-500 leading-relaxed">Precision pathfinding within field boundaries using hybrid telemetry.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hybrid System Architecture -->
+    <section class="py-24 bg-[#E2ECE2]/40 section-fade overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+            <div class="space-y-6">
+                <!-- Visual List/Diagram Mockup -->
+                <div class="space-y-4">
+                    <div class="card p-6 flex items-center gap-6 translate-x-4">
+                        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-bold shrink-0">1</div>
+                        <div>
+                            <p class="text-sm font-bold text-slate-900 uppercase tracking-tight">SENSOR NODES</p>
+                            <p class="text-xs text-slate-500">Edge units collect environment, soil, plant, and field condition data.</p>
+                        </div>
+                    </div>
+                    <div class="card p-6 flex items-center gap-6 translate-x-8">
+                        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-bold shrink-0">2</div>
+                        <div>
+                            <p class="text-sm font-bold text-slate-900 uppercase tracking-tight">ON-DEVICE PROCESSING</p>
+                            <p class="text-xs text-slate-500">AI inference and computer vision processing for real-time field monitoring.</p>
+                        </div>
+                    </div>
+                    <div class="card p-6 flex items-center gap-6 translate-x-4">
+                        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-bold shrink-0">3</div>
+                        <div>
+                            <p class="text-sm font-bold text-slate-900 uppercase tracking-tight">CLOUD GATEWAY</p>
+                            <p class="text-xs text-slate-500">LoRa and Wi-Fi bridge synchronizes robot data with Firebase services.</p>
+                        </div>
+                    </div>
+                    <div class="card p-6 flex items-center gap-6">
+                        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-bold shrink-0">4</div>
+                        <div>
+                            <p class="text-sm font-bold text-slate-900 uppercase tracking-tight">USER DASHBOARD</p>
+                            <p class="text-xs text-slate-500">Real-time web and mobile visualization for monitoring, reports, and alerts.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h2 class="text-4xl font-bold text-slate-900 mb-6 tracking-tight">Hybrid System Architecture</h2>
+                <p class="text-lg text-slate-600 mb-10 leading-relaxed font-normal text-justify">
+                    AgriNova uses a hybrid multi-unit architecture that combines autonomous robot mobility, smart sensing, plant health monitoring, LoRa communication, Firebase cloud synchronization, and AI-based decision support. The system is designed to collect real-time field data through distributed robot units, process key plant and environment information on-device, and synchronize important results to the web and mobile dashboards. This architecture allows AgriNova to operate reliably in farm environments while supporting live monitoring, historical analysis, and intelligent recommendations.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-8">
+                    <!-- 1. EDGE AI -->
+                    <div class="flex items-center gap-4 group cursor-help transition-all">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                            <i data-lucide="binary" size="18"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-800 uppercase tracking-wider">EDGE AI</p>
+                            <p class="text-[10px] text-slate-400 font-medium">On-device plant intelligence</p>
+                        </div>
+                    </div>
+                    <!-- 2. COMPUTER VISION -->
+                    <div class="flex items-center gap-4 group cursor-help transition-all">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                            <i data-lucide="scan-eye" size="18"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-800 uppercase tracking-wider">COMPUTER VISION</p>
+                            <p class="text-[10px] text-slate-400 font-medium">Vision-based plant monitoring</p>
+                        </div>
+                    </div>
+                    <!-- 3. SMART SENSING -->
+                    <div class="flex items-center gap-4 group cursor-help transition-all">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                            <i data-lucide="gauge" size="18"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-800 uppercase tracking-wider">SMART SENSING</p>
+                            <p class="text-[10px] text-slate-400 font-medium">Environment and soil monitoring</p>
+                        </div>
+                    </div>
+                    <!-- 4. AUTONOMOUS -->
+                    <div class="flex items-center gap-4 group cursor-help transition-all">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                            <i data-lucide="navigation" size="18"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-800 uppercase tracking-wider">AUTONOMOUS</p>
+                            <p class="text-[10px] text-slate-400 font-medium">Self-guided field navigation</p>
+                        </div>
+                    </div>
+                    <!-- 5. AI ANALYSIS -->
+                    <div class="flex items-center gap-4 group cursor-help transition-all">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                            <i data-lucide="sparkles" size="18"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-800 uppercase tracking-wider">AI ANALYSIS</p>
+                            <p class="text-[10px] text-slate-400 font-medium">Insights and risk levels</p>
+                        </div>
+                    </div>
+                    <!-- 6. CLOUD SYNC -->
+                    <div class="flex items-center gap-4 group cursor-help transition-all">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                            <i data-lucide="refresh-ccw" size="18"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-800 uppercase tracking-wider">CLOUD SYNC</p>
+                            <p class="text-[10px] text-slate-400 font-medium">Live sync with Firebase</p>
+                        </div>
+                    </div>
+                    <!-- 7. LORA COMMUNICATION -->
+                    <div class="flex items-center gap-4 group cursor-help transition-all">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                            <i data-lucide="antenna" size="18"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-800 uppercase tracking-wider">LORA COMMUNICATION</p>
+                            <p class="text-[10px] text-slate-400 font-medium">Long-range robot bridge</p>
+                        </div>
+                    </div>
+                    <!-- 8. SOLAR POWER -->
+                    <div class="flex items-center gap-4 group cursor-help transition-all">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                            <i data-lucide="sun" size="18"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-800 uppercase tracking-wider">SOLAR POWER</p>
+                            <p class="text-[10px] text-slate-400 font-medium">Sustainable field operation</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Monitored Parameters -->
+    <section class="py-24 bg-white section-fade">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-slate-900 mb-4">Monitored Parameters</h2>
+                <p class="text-slate-500 font-medium">AgriNova monitors key environmental and health parameters required for smart farm decision support.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="card card-hover p-5 flex items-center gap-4">
+                    <i data-lucide="thermometer" class="text-primary" size="20"></i>
+                    <div><p class="text-sm font-bold text-slate-800">Air Temp</p><p class="text-[10px] text-slate-400">Atmosphere monitoring</p></div>
+                </div>
+                <div class="card card-hover p-5 flex items-center gap-4">
+                    <i data-lucide="droplets" class="text-primary" size="20"></i>
+                    <div><p class="text-sm font-bold text-slate-800">Humidity</p><p class="text-[10px] text-slate-400">Moisture sensing</p></div>
+                </div>
+                <div class="card card-hover p-5 flex items-center gap-4">
+                    <i data-lucide="gauge" class="text-primary" size="20"></i>
+                    <div><p class="text-sm font-bold text-slate-800">Pressure</p><p class="text-[10px] text-slate-400">Atmospheric status</p></div>
+                </div>
+                <div class="card card-hover p-5 flex items-center gap-4">
+                    <i data-lucide="mountain" class="text-primary" size="20"></i>
+                    <div><p class="text-sm font-bold text-slate-800">Altitude</p><p class="text-[10px] text-slate-400">Location elevation</p></div>
+                </div>
+                <div class="card card-hover p-5 flex items-center gap-4">
+                    <i data-lucide="sun" class="text-primary" size="20"></i>
+                    <div><p class="text-sm font-bold text-slate-800">Light Intensity</p><p class="text-[10px] text-slate-400">Available sunlight</p></div>
+                </div>
+                <div class="card card-hover p-5 flex items-center gap-4">
+                    <i data-lucide="cloud-rain" class="text-primary" size="20"></i>
+                    <div><p class="text-sm font-bold text-slate-800">Rainfall</p><p class="text-[10px] text-slate-400">Precipitation detection</p></div>
+                </div>
+                <div class="card card-hover p-5 flex items-center gap-4">
+                    <i data-lucide="shrub" class="text-primary" size="20"></i>
+                    <div><p class="text-sm font-bold text-slate-800">Soil Moisture</p><p class="text-[10px] text-slate-400">Root-zone hydration</p></div>
+                </div>
+                <div class="card card-hover p-5 flex items-center gap-4">
+                    <i data-lucide="fingerprint" class="text-primary" size="20"></i>
+                    <div><p class="text-sm font-bold text-slate-800">Soil Temp</p><p class="text-[10px] text-slate-400">Ground thermal state</p></div>
+                </div>
+                <div class="card card-hover p-5 flex items-center gap-4">
+                    <i data-lucide="activity" class="text-primary" size="20"></i>
+                    <div><p class="text-sm font-bold text-slate-800">Motion</p><p class="text-[10px] text-slate-400">Field activity scan</p></div>
+                </div>
+                <div class="card card-hover p-5 flex items-center gap-4">
+                    <i data-lucide="map-pin" class="text-primary" size="20"></i>
+                    <div><p class="text-sm font-bold text-slate-800">GPS Location</p><p class="text-[10px] text-slate-400">Real-time coordinates</p></div>
+                </div>
+                <div class="card card-hover p-5 flex items-center gap-4">
+                    <i data-lucide="heart-pulse" class="text-primary" size="20"></i>
+                    <div><p class="text-sm font-bold text-slate-800">Plant Status</p><p class="text-[10px] text-slate-400">AI health result</p></div>
+                </div>
+                <div class="card card-hover p-5 flex items-center gap-4">
+                    <i data-lucide="eye" class="text-primary" size="20"></i>
+                    <div><p class="text-sm font-bold text-slate-800">Vision Analysis</p><p class="text-[10px] text-slate-400">Onboard AI visual</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-24 bg-primary text-white section-fade">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-4xl font-bold mb-8 italic">Ready to transform your harvest?</h2>
+            <p class="text-lg text-emerald-100/80 mb-10 leading-relaxed font-normal">
+                Join the digital agriculture revolution today. Monitor your crops with unprecedented precision and efficiency through the AgriNova system.
+            </p>
+            <div class="flex justify-center">
+                <button
+                    id="request-access-trigger"
+                    type="button"
+                    class="bg-white text-primary px-12 py-4 rounded-2xl font-bold shadow-xl hover:bg-emerald-50 transition-all active:scale-95"
+                >
+                    Request Access
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <div id="request-access-modal" class="request-access-modal" aria-hidden="true">
+        <div id="request-access-backdrop" class="request-access-backdrop"></div>
+        <div class="request-access-dialog" role="dialog" aria-modal="true" aria-labelledby="request-access-title">
+            <button id="request-access-close" type="button" class="request-access-close" aria-label="Close request access form">
+                <i data-lucide="x" size="18"></i>
+            </button>
+
+            <div class="request-access-header">
+                <span class="request-access-badge">Access Request</span>
+                <h3 id="request-access-title" class="request-access-title">Request access to AgriNova</h3>
+                <p class="request-access-subtitle">
+                    Share a few details about your team and requirements. We’ll receive your request by email and follow up.
+                </p>
+            </div>
+
+            <form id="request-access-form" class="request-access-form">
+                <div class="request-access-grid">
+                    <label class="request-access-field">
+                        <span class="request-access-label">Name</span>
+                        <input name="name" type="text" class="request-access-input" placeholder="Your full name" required>
+                    </label>
+
+                    <label class="request-access-field">
+                        <span class="request-access-label">Email</span>
+                        <input name="email" type="email" class="request-access-input" placeholder="you@company.com" required>
+                    </label>
+
+                    <label class="request-access-field">
+                        <span class="request-access-label">Phone Number</span>
+                        <input name="phone" type="tel" class="request-access-input" placeholder="+94 77 123 4567" required>
+                    </label>
+
+                    <label class="request-access-field">
+                        <span class="request-access-label">Organization / Company</span>
+                        <input name="organization" type="text" class="request-access-input" placeholder="Company or farm name" required>
+                    </label>
+                </div>
+
+                <label class="request-access-field">
+                    <span class="request-access-label">Message or Requirement</span>
+                    <textarea
+                        name="message"
+                        class="request-access-textarea"
+                        rows="5"
+                        placeholder="Tell us about your use case, farm size, goals, or anything you'd like us to know."
+                        required
+                    ></textarea>
+                </label>
+
+                <p id="request-access-status" class="request-access-status" aria-live="polite"></p>
+
+                <div class="request-access-actions">
+                    <button id="request-access-cancel" type="button" class="request-access-secondary">
+                        Cancel
+                    </button>
+                    <button id="request-access-submit" type="submit" class="request-access-primary">
+                        <i data-lucide="send" size="16"></i>
+                        Send Request
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-emerald-100/50 py-16">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-10">
+            <div>
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white">
+                        <i data-lucide="tractor" size="18"></i>
+                    </div>
+                    <span class="text-xl font-bold text-primary tracking-tighter">AgriNova</span>
+                </div>
+                <p class="text-sm text-slate-400 font-medium">AI-Powered Autonomous Agricultural Robot Monitoring Systems.</p>
+                <p class="text-xs text-slate-300 mt-2 font-bold uppercase tracking-widest">&copy; 2026 AgriNova Project. All rights reserved.</p>
+            </div>
+            <div class="flex flex-wrap justify-center md:justify-start gap-8 md:gap-10 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                <a href="javascript:void(0)" class="hover:text-primary transition-colors cursor-default">Privacy Policy</a>
+                <a href="javascript:void(0)" class="hover:text-primary transition-colors cursor-default">Terms of Service</a>
+                <a href="javascript:void(0)" class="hover:text-primary transition-colors cursor-default">Contact Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="./js/auth.js"></script>
+    <script type="module" src="./js/request-access.js"></script>
+    <script type="module">
+        import { startDashboardAccess } from './js/auth.js';
+
+        const viewDashboardBtn = document.getElementById('view-dashboard-btn');
+        if (viewDashboardBtn) {
+            viewDashboardBtn.addEventListener('click', startDashboardAccess);
+        }
+        
+        // Setup Intersection Observer for fade-up animations
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section-fade').forEach(section => {
+            observer.observe(section);
+        });
+
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

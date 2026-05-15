@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphical View | AgriNova</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .graph-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 28px;
+            align-items: start;
+        }
+
+        .chart-container {
+            flex: 1 1 380px;
+            max-width: 420px;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .chart-container {
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+        }
+
+        .chart-card {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 24px;
+            box-shadow: 0 16px 40px rgba(15, 60, 40, 0.08);
+            border: 1px solid rgba(20, 80, 55, 0.08);
+            min-height: auto;
+        }
+
+        .chart-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .chart-title-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chart-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chart-title-group h3 {
+            font-size: 14px;
+            font-weight: 900;
+            color: #0f172a;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+
+        .chart-title-group p {
+            font-size: 10px;
+            font-weight: 600;
+            color: #64748b;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .chart-latest-value {
+            display: flex;
+            align-items: baseline;
+            gap: 2px;
+        }
+
+        .chart-latest-value span {
+            font-size: 20px;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -0.05em;
+        }
+
+        .chart-latest-value small {
+            font-size: 12px;
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            height: 240px;
+            max-height: 240px;
+            overflow: hidden;
+        }
+
+        .chart-wrapper canvas {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+        }
+
+        .chart-wrapper.compact {
+            height: 200px;
+            max-height: 200px;
+        }
+
+        @media (max-width: 768px) {
+            .chart-wrapper {
+                height: 220px;
+                max-height: 220px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#fdfdfb]">
+    <header class="bg-white/80 backdrop-blur-md border-b border-emerald-100 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
+            <a href="index.html" class="navbar-brand">
+                <img src="assets/images/Logo.png" 
+                     alt="AgriNova Logo" 
+                     class="navbar-logo">
+                <span class="text-2xl font-bold text-primary tracking-tighter">AgriNova</span>
+            </a>
+            
+            <div class="hidden md:flex items-center gap-10">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="graphs.html" class="nav-link text-primary font-bold after:w-full border-b-2 border-primary pb-1">Graphs</a>
+                <a href="analysis.html" class="nav-link">AI Analysis</a>
+            </div>
+
+            <div id="auth-nav" class="flex items-center gap-4">
+                <!-- User Profile / Auth handled by auth.js -->
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <!-- Page Title & Live Info -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+            <div>
+                <h1 class="text-4xl font-black text-slate-900 tracking-tighter sm:text-5xl">Live Graphical View</h1>
+                <p class="text-slate-500 mt-2 font-medium">Real-time environmental, plant health, and AI analysis trends.</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+                <div class="bg-white border border-slate-100 px-4 py-2 rounded-2xl shadow-sm flex items-center gap-3">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    <div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Live Sync</p>
+                        <p id="last-updated-val" class="text-xs font-bold text-slate-900 mt-1 leading-none">Initializing...</p>
+                    </div>
+                </div>
+                <div class="bg-emerald-600 text-white px-5 py-2 rounded-2xl shadow-lg shadow-emerald-600/10 text-xs font-bold flex items-center gap-2">
+                    <i data-lucide="radio" size="14"></i>
+                    SYSTEM LIVE
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Tabs and Controls -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-6 mb-8 border-b border-slate-100 pb-6">
+            <div class="flex bg-slate-100/50 p-1 rounded-2xl w-full sm:w-auto overflow-x-auto no-scrollbar">
+                <button data-tab="all" class="tab-btn active px-6 py-2.5 rounded-xl text-xs font-bold transition-all">All Views</button>
+                <button data-tab="environment" class="tab-btn px-6 py-2.5 rounded-xl text-xs font-bold text-slate-500 transition-all">Environment</button>
+                <button data-tab="plant" class="tab-btn px-6 py-2.5 rounded-xl text-xs font-bold text-slate-500 transition-all">Plant Health</button>
+                <button data-tab="analysis" class="tab-btn px-6 py-2.5 rounded-xl text-xs font-bold text-slate-500 transition-all">AI Analysis</button>
+            </div>
+
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+                <button id="pause-btn" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-50 transition-all">
+                    <i data-lucide="pause-circle" size="16"></i>
+                    <span id="pause-text">Pause Live</span>
+                </button>
+                <button id="clear-btn" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-red-500 hover:bg-red-50 hover:border-red-100 transition-all">
+                    <i data-lucide="refresh-cw" size="16"></i>
+                    Clear
+                </button>
+            </div>
+        </div>
+
+        <!-- Graph Grid -->
+        <div id="graphs-grid" class="graph-grid">
+            <!-- Environment Charts -->
+            <div id="container-airTemp" class="chart-container" data-category="environment">
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <div class="chart-title-group">
+                            <div class="chart-icon bg-orange-50 text-orange-500">
+                                <i data-lucide="thermometer" size="20"></i>
+                            </div>
+                            <div>
+                                <h3>Air Temperature</h3>
+                                <p>Realtime sensor trend</p>
+                            </div>
+                        </div>
+                        <div class="chart-latest-value">
+                            <span id="label-airTemp">--</span>
+                            <small>°C</small>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="chart-airTemp"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div id="container-humidity" class="chart-container" data-category="environment">
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <div class="chart-title-group">
+                            <div class="chart-icon bg-blue-50 text-blue-500">
+                                <i data-lucide="droplets" size="20"></i>
+                            </div>
+                            <div>
+                                <h3>Humidity</h3>
+                                <p>Air moisture levels</p>
+                            </div>
+                        </div>
+                        <div class="chart-latest-value">
+                            <span id="label-humidity">--</span>
+                            <small>%</small>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="chart-humidity"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div id="container-pressure" class="chart-container" data-category="environment">
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <div class="chart-title-group">
+                            <div class="chart-icon bg-indigo-50 text-indigo-500">
+                                <i data-lucide="gauge" size="20"></i>
+                            </div>
+                            <div>
+                                <h3>ATM. Pressure</h3>
+                                <p>Atmospheric trends</p>
+                            </div>
+                        </div>
+                        <div class="chart-latest-value">
+                            <span id="label-pressure">--</span>
+                            <small>hPa</small>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="chart-pressure"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div id="container-altitude" class="chart-container" data-category="environment">
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <div class="chart-title-group">
+                            <div class="chart-icon bg-sky-50 text-sky-600">
+                                <i data-lucide="mountain" size="20"></i>
+                            </div>
+                            <div>
+                                <h3>Altitude</h3>
+                                <p>Vertical elevation</p>
+                            </div>
+                        </div>
+                        <div class="chart-latest-value">
+                            <span id="label-altitude">--</span>
+                            <small>m</small>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="chart-altitude"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div id="container-light" class="chart-container" data-category="environment">
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <div class="chart-title-group">
+                            <div class="chart-icon bg-amber-50 text-amber-500">
+                                <i data-lucide="sun" size="20"></i>
+                            </div>
+                            <div>
+                                <h3>Light Intensity</h3>
+                                <p>Luminous flux levels</p>
+                            </div>
+                        </div>
+                        <div class="chart-latest-value">
+                            <span id="label-light">--</span>
+                            <small>lx</small>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="chart-light"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div id="container-rainPercent" class="chart-container" data-category="environment">
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <div class="chart-title-group">
+                            <div class="chart-icon bg-blue-100 text-blue-700">
+                                <i data-lucide="cloud-rain" size="20"></i>
+                            </div>
+                            <div>
+                                <h3>Rainfall %</h3>
+                                <p>Precipitation probability</p>
+                            </div>
+                        </div>
+                        <div class="chart-latest-value">
+                            <span id="label-rainPercent">--</span>
+                            <small>%</small>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="chart-rainPercent"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div id="container-soilMoisture" class="chart-container" data-category="environment">
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <div class="chart-title-group">
+                            <div class="chart-icon bg-emerald-50 text-emerald-600">
+                                <i data-lucide="shrub" size="20"></i>
+                            </div>
+                            <div>
+                                <h3>Soil Moisture</h3>
+                                <p>Ground hydration</p>
+                            </div>
+                        </div>
+                        <div class="chart-latest-value">
+                            <span id="label-soilMoisture">--</span>
+                            <small>%</small>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="chart-soilMoisture"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div id="container-soilTemp" class="chart-container" data-category="environment">
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <div class="chart-title-group">
+                            <div class="chart-icon bg-orange-100 text-orange-700">
+                                <i data-lucide="thermometer-snowflake" size="20"></i>
+                            </div>
+                            <div>
+                                <h3>Soil Temp</h3>
+                                <p>Subsurface thermal data</p>
+                            </div>
+                        </div>
+                        <div class="chart-latest-value">
+                            <span id="label-soilTemp">--</span>
+                            <small>°C</small>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="chart-soilTemp"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div id="container-motion" class="chart-container" data-category="environment">
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <div class="chart-title-group">
+                            <div class="chart-icon bg-slate-100 text-slate-500">
+                                <i data-lucide="scan-eye" size="20"></i>
+                            </div>
+                            <div>
+                                <h3>Motion Activity</h3>
+                                <p>Movement detection</p>
+                            </div>
+                        </div>
+                        <div id="label-motion" class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-400">WAITING</div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="chart-motion"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plant Charts -->
+            <div id="container-confidence" class="chart-container" data-category="plant">
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <div class="chart-title-group">
+                            <div class="chart-icon bg-emerald-600 text-white shadow-md shadow-emerald-600/20">
+                                <i data-lucide="sprout" size="20"></i>
+                            </div>
+                            <div>
+                                <h3>Plant Confidence</h3>
+                                <p>ML detection accuracy</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <div class="chart-latest-value">
+                                <span id="label-confidence">--</span>
+                            </div>
+                            <div id="plant-status-badge" class="mt-1 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest hidden">
+                                --
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="chart-confidence"></canvas>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- AI Analysis -->
+            <div id="container-farmHealth" class="chart-container" data-category="analysis">
+                <div class="chart-card bg-slate-900 text-white shadow-xl shadow-slate-200">
+                    <div class="chart-card-header">
+                        <div class="chart-title-group">
+                            <div class="chart-icon bg-emerald-500 text-white">
+                                <i data-lucide="brain-circuit" size="20"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-slate-300">Farm Health Score</h3>
+                                <p class="text-slate-400">Aggregated AI health index</p>
+                            </div>
+                        </div>
+                        <div class="chart-latest-value">
+                            <span id="label-farmHealth" class="text-emerald-400">--</span>
+                            <small class="text-emerald-400/60">%</small>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="chart-farmHealth"></canvas>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Meta Grid -->
+        <div class="flex justify-center mt-12">
+            <div class="bg-white border border-emerald-100 p-6 rounded-3xl shadow-sm flex items-center justify-between bg-emerald-50/20 w-full max-w-xs">
+                <div>
+                    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1" id="window-status">Window Range</h4>
+                    <p class="text-xs font-bold text-slate-900">Last 60 Seconds Tracked</p>
+                </div>
+                <div class="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center text-white">
+                    <i data-lucide="clock" size="16"></i>
+                </div>
+            </div>
+        </div>
+
+        <div id="loading-overlay" class="fixed inset-0 z-50 bg-[#fdfdfb] flex flex-col items-center justify-center pointer-events-none transition-opacity duration-500">
+            <div class="relative w-24 h-24 mb-6">
+                <div class="absolute inset-0 border-4 border-emerald-100 rounded-full"></div>
+                <div class="absolute inset-0 border-4 border-emerald-600 rounded-full border-t-transparent animate-spin"></div>
+                <div class="absolute inset-0 flex items-center justify-center text-emerald-600">
+                    <i data-lucide="presentation" size="32"></i>
+                </div>
+            </div>
+            <h2 class="text-xl font-bold text-slate-900 animate-pulse tracking-tighter">Preparing Real-time Graphs...</h2>
+            <p class="text-slate-400 text-sm mt-1 font-bold uppercase tracking-widest">Hydrating Chart Buffers</p>
+        </div>
+    </main>
+
+    <script type="module" src="./js/auth.js"></script>
+    <script type="module" src="./js/graphs.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

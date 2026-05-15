@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Analysis | AgriNova</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#f0f4f0]/50 text-slate-900 font-sans antialiased">
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-emerald-100/50 shadow-sm">
+        <div class="max-w-[1600px] mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="navbar-brand">
+                <img src="assets/images/Logo.png" 
+                     alt="AgriNova Logo" 
+                     class="navbar-logo">
+                <span class="text-2xl font-bold text-primary tracking-tighter">AgriNova</span>
+            </a>
+            
+            <div class="hidden md:flex items-center gap-10">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="graphs.html" class="nav-link">Graphs</a>
+                <a href="analysis.html" class="nav-link text-primary font-bold after:w-full border-b-2 border-primary pb-1">AI Analysis</a>
+            </div>
+
+            <div id="auth-nav" class="flex items-center gap-4"></div>
+        </div>
+    </nav>
+
+    <main class="max-w-[1600px] mx-auto p-6 lg:p-12">
+        <!-- Page Header -->
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-12">
+            <div class="max-w-2xl">
+                <h1 class="text-3xl lg:text-4xl font-black text-slate-900 tracking-tight mb-2">AI Analysis & Recommendations</h1>
+                <p class="text-slate-500 font-medium text-base leading-relaxed">Realtime AI-powered insights, reports, suggestions, and risk alerts from AgriNova.</p>
+            </div>
+            
+            <div class="flex flex-wrap gap-3">
+                <div class="bg-white border border-slate-100 p-4 rounded-2xl shadow-sm min-w-[180px]">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Quick Analysis</p>
+                    <div class="flex items-center gap-2 mb-2">
+                        <div id="quick-ai-status" class="w-2 h-2 rounded-full bg-slate-300"></div>
+                        <p id="last-quick-time" class="text-xs font-bold text-slate-900 leading-none">--</p>
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-100 p-4 rounded-2xl shadow-sm min-w-[180px]">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Daily Report</p>
+                    <div class="flex items-center gap-2">
+                        <div id="daily-ai-status" class="w-2 h-2 rounded-full bg-slate-300"></div>
+                        <p id="last-daily-time" class="text-xs font-bold text-slate-900 leading-none">--</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-12">
+            <!-- 1. Top Grid: Quick Analysis + Daily Report -->
+            <div class="analysis-top-grid">
+                <!-- Quick Analysis Card -->
+                <section id="quick-analysis-card" class="bg-white rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/40 p-8 flex flex-col h-full relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-6 opacity-[0.03] text-emerald-600 pointer-events-none">
+                        <i data-lucide="zap" size="120"></i>
+                    </div>
+                    
+                    <div class="relative z-10 flex flex-col h-full">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600">
+                                <i data-lucide="activity" size="24"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h2 class="text-lg font-black text-slate-900 tracking-tight">Quick Analysis</h2>
+                                <p class="text-slate-400 font-bold tracking-tight text-[9px] uppercase">Farm status overview</p>
+                            </div>
+                            <div id="quickStatusBadge" class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-400">
+                                --
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 mb-6">
+                            <div class="bg-slate-50 border border-slate-100 p-4 rounded-2xl">
+                                <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Health Score</p>
+                                <p id="quickFarmHealthScore" class="text-xl font-black text-slate-800">--</p>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-100 p-4 rounded-2xl">
+                                <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Risk Level</p>
+                                <p id="quickRiskLevel" class="text-sm font-black text-slate-800">--</p>
+                            </div>
+                            <div class="bg-emerald-50/50 border border-emerald-100 p-4 rounded-2xl">
+                                <p class="text-[8px] font-black text-emerald-600/60 uppercase tracking-widest mb-1">Environment</p>
+                                <p id="quickEnvironmentScore" class="text-sm font-black text-emerald-700">--</p>
+                            </div>
+                            <div class="bg-emerald-50/50 border border-emerald-100 p-4 rounded-2xl">
+                                <p class="text-[8px] font-black text-emerald-600/60 uppercase tracking-widest mb-1">Plant Score</p>
+                                <p id="quickPlantScore" class="text-sm font-black text-emerald-700">--</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-auto">
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                <i data-lucide="message-square" size="12"></i>
+                                AI Insight
+                            </p>
+                            <p id="quickAiInsight" class="text-sm text-slate-600 font-medium leading-relaxed bg-slate-50/50 p-4 rounded-2xl border border-slate-100/50 line-clamp-3">Loading insight...</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Daily Farm Report Card -->
+                <section id="daily-report-section" class="bg-white rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/40 p-8 h-fit relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-8 opacity-[0.03] text-emerald-600 pointer-events-none">
+                        <i data-lucide="file-text" size="160"></i>
+                    </div>
+
+                    <div class="relative z-10">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600">
+                                    <i data-lucide="clipboard-list" size="24"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h2 class="text-lg font-black text-slate-900 tracking-tight">Daily Farm Report</h2>
+                                    <p id="report-date" class="text-slate-400 font-bold uppercase tracking-widest text-[9px]">--</p>
+                                </div>
+                            </div>
+                            <div id="daily-risk-badge" class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-400">
+                                --
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <div class="flex flex-col">
+                                <div class="mb-6">
+                                    <p id="daily-summary" class="text-sm text-slate-600 leading-relaxed font-medium">Daily analysis loading...</p>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-4 mt-auto">
+                                    <div class="bg-slate-50 border border-slate-100 p-4 rounded-3xl text-center">
+                                        <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Farm Health</p>
+                                        <p class="text-2xl font-black text-emerald-600 tracking-tighter"><span id="daily-health-score">--</span>%</p>
+                                    </div>
+                                    <div class="bg-slate-50 border border-slate-100 p-4 rounded-3xl text-center">
+                                        <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Risk Level</p>
+                                        <p id="daily-risk-label" class="text-sm font-black text-slate-800 tracking-tighter uppercase">--</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-emerald-50/50 border border-emerald-100 rounded-3xl p-6 h-fit">
+                                <h3 class="text-[10px] font-black text-emerald-800 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                    <i data-lucide="list-checks" size="14"></i>
+                                    Key Observations
+                                </h3>
+                                <ul id="key-changes-list" class="space-y-2">
+                                    <li class="flex items-start gap-2">
+                                        <div class="mt-1 w-1 h-1 rounded-full bg-emerald-500 shrink-0"></div>
+                                        <p class="text-slate-700 font-medium text-[11px] italic">Loading observations...</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- 2. Middle Grid: Env Averages + Plant Summary + Action Tomorrow -->
+            <div class="analysis-summary-grid">
+                <!-- Environment Averages -->
+                <section class="bg-white border border-slate-100 rounded-[2.5rem] shadow-sm p-8 flex flex-col">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
+                            <i data-lucide="thermometer" size="20"></i>
+                        </div>
+                        <h2 class="text-lg font-black text-slate-900 tracking-tight">Env Averages</h2>
+                    </div>
+                    
+                    <div class="space-y-3 flex-1 flex flex-col justify-center">
+                        <div class="flex items-center justify-between py-2 border-b border-slate-50 last:border-0">
+                            <span class="text-xs font-bold text-slate-500">Avg Temp</span>
+                            <span id="avg-temp" class="text-xs font-black text-emerald-800">--</span>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-slate-50 last:border-0">
+                            <span class="text-xs font-bold text-slate-500">Max Temp</span>
+                            <span id="max-temp" class="text-xs font-black text-emerald-800">--</span>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-slate-50 last:border-0">
+                            <span class="text-xs font-bold text-slate-500">Avg Humid</span>
+                            <span id="avg-humidity" class="text-xs font-black text-emerald-800">--</span>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-slate-50 last:border-0">
+                            <span class="text-xs font-bold text-slate-500">Soil Moist</span>
+                            <span id="avg-soil-moisture" class="text-xs font-black text-emerald-800">--</span>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-slate-50 last:border-0">
+                            <span class="text-xs font-bold text-slate-500">Soil Temp</span>
+                            <span id="avg-soil-temp" class="text-xs font-black text-emerald-800">--</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Plant Health Summary (Green Card) -->
+                <section class="bg-emerald-600 rounded-[2.5rem] p-8 text-white shadow-xl shadow-emerald-600/20 relative overflow-hidden flex flex-col">
+                    <div class="relative z-10 flex flex-col h-full">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center border border-white/20">
+                                <i data-lucide="heart" size="20"></i>
+                            </div>
+                            <h2 class="text-lg font-black tracking-tight">Plant Health</h2>
+                        </div>
+                        
+                        <div class="mb-auto pb-6">
+                            <div class="flex items-baseline gap-1">
+                                <span id="summary-healthy-pct" class="text-5xl font-black tracking-tighter">--</span>
+                                <span class="text-xl font-black opacity-60">%</span>
+                            </div>
+                            <p class="text-emerald-100 font-bold tracking-widest text-[9px] uppercase mt-1">Healthy Status</p>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-2 border-t border-white/10 pt-6">
+                            <div class="text-center">
+                                <p class="text-[8px] font-black uppercase opacity-60 mb-1">Stress</p>
+                                <p class="text-sm font-black"><span id="summary-stressed-pct">--</span>%</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-[8px] font-black uppercase opacity-60 mb-1">Poor</p>
+                                <p class="text-sm font-black"><span id="summary-unhealthy-pct">--</span>%</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-[8px] font-black uppercase opacity-60 mb-1">Abnorm</p>
+                                <p class="text-sm font-black"><span id="summary-abnormal-pct">--</span>%</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Action for Tomorrow -->
+                <section class="bg-white border border-slate-100 rounded-[2.5rem] shadow-sm p-8 flex flex-col">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
+                            <i data-lucide="calendar" size="20"></i>
+                        </div>
+                        <h2 class="text-lg font-black text-slate-900 tracking-tight">Next Focus</h2>
+                    </div>
+                    <div class="flex-1 flex flex-col justify-center">
+                        <div class="bg-emerald-50 p-6 rounded-3xl border border-emerald-100 border-dashed">
+                            <p id="recommended-action" class="text-slate-700 font-bold leading-relaxed text-center text-sm">--</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- 3. AI Suggestions Section -->
+            <section>
+                <div class="flex items-center justify-between mb-8">
+                    <h2 class="text-2xl font-black text-slate-900 tracking-tight flex items-center gap-3">
+                        <i data-lucide="sparkles" class="text-emerald-500"></i>
+                        Smart AI Suggestions
+                    </h2>
+                </div>
+
+                <!-- Next Action (Featured Highlight) -->
+                <div id="suggestion-next-action" class="bg-emerald-950 rounded-[2.5rem] p-10 mb-10 text-white shadow-2xl shadow-emerald-900/20 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-12 opacity-5 text-white pointer-events-none group-hover:scale-110 transition-transform duration-700">
+                        <i data-lucide="zap" size="200"></i>
+                    </div>
+                    <div class="relative z-10 max-w-4xl">
+                        <h3 class="text-2xl font-black mb-4 leading-tight">Critical Immediate Action</h3>
+                        <p id="text-suggestion-next" class="text-lg text-emerald-100/90 leading-relaxed font-medium">Loading AI recommendation...</p>
+                    </div>
+                </div>
+
+                <div class="suggestions-grid">
+                    <!-- Irrigation -->
+                    <div class="bg-white border border-slate-100 p-8 rounded-[2rem] shadow-sm relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-1.5 h-full bg-sky-500" id="suggestion-irrigation-accent"></div>
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="w-12 h-12 bg-sky-50 rounded-2xl flex items-center justify-center text-sky-500">
+                                <i data-lucide="droplet" size="24"></i>
+                            </div>
+                            <span id="suggestion-irrigation-badge" class="bg-slate-100 text-slate-400 text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full">--</span>
+                        </div>
+                        <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Irrigation Control</h4>
+                        <p id="text-suggestion-irrigation" class="text-slate-800 font-bold leading-relaxed">--</p>
+                    </div>
+
+                    <!-- Fertilizer -->
+                    <div class="bg-white border border-slate-100 p-8 rounded-[2rem] shadow-sm relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-1.5 h-full bg-emerald-500"></div>
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600">
+                                <i data-lucide="flask-conical" size="24"></i>
+                            </div>
+                            <span class="bg-slate-100 text-slate-400 text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border border-slate-100">AI Advice</span>
+                        </div>
+                        <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Fertilizer Opt</h4>
+                        <p id="text-suggestion-fertilizer" class="text-slate-800 font-bold leading-relaxed">--</p>
+                    </div>
+
+                    <!-- Inspection -->
+                    <div class="bg-white border border-slate-100 p-8 rounded-[2rem] shadow-sm relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-1.5 h-full bg-orange-500"></div>
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center text-orange-500">
+                                <i data-lucide="search" size="24"></i>
+                            </div>
+                            <span class="bg-slate-100 text-slate-400 text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border border-slate-100">Important</span>
+                        </div>
+                        <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Field Inspection</h4>
+                        <p id="text-suggestion-inspection" class="text-slate-800 font-bold leading-relaxed">--</p>
+                    </div>
+
+                    <!-- Pest/Disease Warning -->
+                    <div class="bg-white border border-slate-100 p-8 rounded-[2rem] shadow-sm relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-1.5 h-full bg-red-500" id="suggestion-pest-accent"></div>
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center text-red-500">
+                                <i data-lucide="bug" size="24"></i>
+                            </div>
+                            <span id="suggestion-pest-badge" class="bg-slate-100 text-slate-400 text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full">--</span>
+                        </div>
+                        <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Biosecurity Warning</h4>
+                        <p id="text-suggestion-pest" class="text-slate-800 font-bold leading-relaxed">--</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Risk Alerts (Wide) -->
+            <section>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-8 h-8 bg-red-50 rounded-lg flex items-center justify-center text-red-500">
+                        <i data-lucide="alert-triangle" size="18"></i>
+                    </div>
+                    <h2 class="text-xl font-black text-slate-900 tracking-tight">Active Risk Alerts</h2>
+                </div>
+                <div id="alerts-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Alerts injection -->
+                    <div class="bg-emerald-50 border border-emerald-100 p-6 rounded-3xl flex items-center gap-4 col-span-full">
+                        <div class="text-emerald-600">
+                            <i data-lucide="shield-check" size="24"></i>
+                        </div>
+                        <p class="text-emerald-800 font-bold text-sm">No critical alerts detected at this moment.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. Detailed Metric Analyses Grid -->
+            <div class="details-grid">
+                <!-- Environmental AI Analysis -->
+                <section class="bg-white border border-slate-100 rounded-[2.5rem] p-8 shadow-sm">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
+                            <i data-lucide="cloud-sun" size="20"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-black text-slate-900 tracking-tight">Climate Analysis</h3>
+                            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">In-depth audit</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[9px] font-black text-slate-400 uppercase mb-1">Score</p>
+                            <p class="text-base font-black text-emerald-600 tracking-tighter"><span id="env-score">--</span>/100</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-4 gap-2 mb-8">
+                        <div id="div-env-status" class="p-3 bg-slate-50 border border-slate-100 rounded-2xl text-center">
+                            <p class="text-[7px] font-black text-slate-400 uppercase mb-1">Cond</p>
+                            <p id="env-status" class="text-[10px] font-black truncate">--</p>
+                        </div>
+                        <div id="div-env-rain" class="p-3 bg-slate-50 border border-slate-100 rounded-2xl text-center">
+                            <p class="text-[7px] font-black text-slate-400 uppercase mb-1">Rain</p>
+                            <p id="env-rainfall" class="text-[10px] font-black truncate">--</p>
+                        </div>
+                        <div id="div-env-moisture" class="p-3 bg-slate-50 border border-slate-100 rounded-2xl text-center">
+                            <p class="text-[7px] font-black text-slate-400 uppercase mb-1">Moist</p>
+                            <p id="env-moisture" class="text-[10px] font-black truncate">--</p>
+                        </div>
+                        <div id="div-env-light" class="p-3 bg-slate-50 border border-slate-100 rounded-2xl text-center">
+                            <p class="text-[7px] font-black text-slate-400 uppercase mb-1">Light</p>
+                            <p id="env-light-cond" class="text-[10px] font-black truncate">--</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+                        <div class="grid grid-cols-3 gap-2">
+                            <div class="text-center">
+                                <p class="text-[7px] font-bold text-slate-400 uppercase">Air</p>
+                                <p id="env-raw-temp" class="text-xs font-black">--</p>
+                            </div>
+                            <div class="text-center border-x border-slate-200">
+                                <p class="text-[7px] font-bold text-slate-400 uppercase">Humid</p>
+                                <p id="env-raw-humid" class="text-xs font-black">--</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-[7px] font-bold text-slate-400 uppercase">Soil</p>
+                                <p id="env-raw-soil" class="text-xs font-black">--</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Plant AI Analysis -->
+                <section class="bg-white border border-slate-100 rounded-[2.5rem] p-8 shadow-sm">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
+                            <i data-lucide="leaf" size="20"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-black text-slate-900 tracking-tight">Health Analysis</h3>
+                            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Vision-based Audit</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[9px] font-black text-slate-400 uppercase mb-1">Health</p>
+                            <p class="text-base font-black text-emerald-600 tracking-tighter"><span id="plt-score">--</span>/100</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-4 gap-2 mb-8">
+                        <div id="div-plt-status" class="p-3 bg-slate-50 border border-slate-100 rounded-2xl text-center">
+                            <p class="text-[7px] font-black text-slate-400 uppercase mb-1">Status</p>
+                            <p id="plt-status" class="text-[10px] font-black truncate">--</p>
+                        </div>
+                        <div id="div-plt-disease" class="p-3 bg-slate-50 border border-slate-100 rounded-2xl text-center">
+                            <p class="text-[7px] font-black text-slate-400 uppercase mb-1">Risk</p>
+                            <p id="plt-disease" class="text-[10px] font-black truncate">--</p>
+                        </div>
+                        <div id="div-plt-conf" class="p-3 bg-slate-50 border border-slate-100 rounded-2xl text-center">
+                            <p class="text-[7px] font-black text-slate-400 uppercase mb-1">Conf</p>
+                            <p id="plt-conf" class="text-[10px] font-black truncate">--</p>
+                        </div>
+                        <div id="div-plt-unhealthy" class="p-3 bg-slate-50 border border-slate-100 rounded-2xl text-center">
+                            <p class="text-[7px] font-black text-slate-400 uppercase mb-1">Issue</p>
+                            <p id="plt-unhealthy" class="text-[10px] font-black truncate">--</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="text-center border-r border-slate-200">
+                                <p class="text-[7px] font-bold text-slate-400 uppercase">Classification</p>
+                                <p id="plt-detection" class="text-[10px] font-black">--</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-[7px] font-bold text-slate-400 uppercase">Abnormal</p>
+                                <p id="plt-abnormal" class="text-[10px] font-black">--</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Chatbot Popup -->
+    <div id="chatbot-fab" class="chatbot-fab">
+        <i data-lucide="bot"></i>
+    </div>
+
+    <div id="chatbot-panel" class="chatbot-panel">
+        <div class="chatbot-header">
+            <div class="absolute top-0 right-0 p-8 opacity-[0.05] text-white pointer-events-none">
+                <i data-lucide="zap" size="140"></i>
+            </div>
+            <div class="relative z-10 flex items-center gap-3">
+                <button id="chatbot-back" class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center hover:bg-white/30 transition-colors">
+                    <i data-lucide="chevron-down" size="20"></i>
+                </button>
+                <div>
+                    <h3 class="text-lg font-black tracking-tight leading-none">AgriNova Assistant</h3>
+                    <div class="flex items-center gap-2 mt-2">
+                        <div id="chatbot-service-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse-soft"></div>
+                        <p id="chatbot-service-status" class="text-[10px] font-black uppercase tracking-widest opacity-80">Connected</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="chatbot-messages" class="chatbot-messages">
+            <div class="chat-bubble chat-bubble-assistant">
+                <p>Hello! I'm your AgriNova Assistant. How can I help you with your farm monitoring today?</p>
+            </div>
+        </div>
+
+        <div class="chatbot-input-area">
+            <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Ask about current farm condition...">
+            <button id="chatbot-send" class="chatbot-send-btn">
+                <i data-lucide="send" size="18"></i>
+            </button>
+        </div>
+
+        <div class="px-6 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i data-lucide="cpu" size="12" class="text-slate-400"></i>
+                <span id="chatbot-model" class="text-[9px] font-bold text-slate-400 uppercase">--</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                <span id="chatbot-ai-status" class="text-[9px] font-bold text-slate-400 uppercase">Online</span>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./js/auth.js"></script>
+    <script type="module" src="./js/analysis.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

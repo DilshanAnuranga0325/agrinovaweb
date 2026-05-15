@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | AgriNova</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#fdfdfb]">
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-emerald-100/50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="navbar-brand">
+                <img src="assets/images/Logo.png" 
+                     alt="AgriNova Logo" 
+                     class="navbar-logo">
+                <span class="text-2xl font-bold text-primary tracking-tighter">AgriNova</span>
+            </a>
+            
+            <div class="hidden md:flex items-center gap-10">
+                <a href="dashboard.html" class="nav-link text-primary font-bold after:w-full border-b-2 border-primary pb-1">Dashboard</a>
+                <a href="graphs.html" class="nav-link">Graphs</a>
+                <a href="analysis.html" class="nav-link">AI Analysis</a>
+            </div>
+
+            <div id="auth-nav" class="flex items-center gap-4">
+                <!-- Profile will be injected by navbar.js -->
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-[1400px] mx-auto p-6 lg:p-10">
+        <!-- Header Section -->
+        <div class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+                <h1 class="text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-3">Live Monitoring Dashboard</h1>
+                <p class="text-slate-500 font-medium text-lg">Real-time environmental and plant health data from AgriNova.</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="hidden md:block text-right">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Last Synchronized</p>
+                    <p id="last-updated-val" class="text-xs font-bold text-slate-600">--</p>
+                </div>
+                <div class="flex items-center gap-2 text-xs font-bold text-emerald-600 bg-emerald-50 px-5 py-2.5 rounded-full border border-emerald-100 shadow-sm">
+                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                    SYSTEM LIVE
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Environment Overview -->
+        <section class="mb-12">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-1.5 h-6 bg-emerald-600 rounded-full"></div>
+                <h2 class="text-xl font-bold text-slate-900 tracking-tight">Environment Overview</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Air Temperature -->
+                <div class="card p-6 bg-white hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center text-orange-500">
+                            <i data-lucide="thermometer" size="18"></i>
+                        </div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-tight">Air Temperature</p>
+                    </div>
+                    <h3 id="airTemp-val" class="text-3xl font-light text-slate-900">--<span class="text-sm text-slate-400 font-bold ml-1">°C</span></h3>
+                </div>
+
+                <!-- Humidity -->
+                <div class="card p-6 bg-white hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-500">
+                            <i data-lucide="droplets" size="18"></i>
+                        </div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-tight">Humidity</p>
+                    </div>
+                    <h3 id="humidity-val" class="text-3xl font-light text-slate-900">--<span class="text-sm text-slate-400 font-bold ml-1">%</span></h3>
+                </div>
+
+                <!-- Pressure -->
+                <div class="card p-6 bg-white hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-500">
+                            <i data-lucide="gauge" size="18"></i>
+                        </div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-tight">Atmospheric Pressure</p>
+                    </div>
+                    <h3 id="pressure-val" class="text-3xl font-light text-slate-900">--<span class="text-sm text-slate-400 font-bold ml-1">hPa</span></h3>
+                </div>
+
+                <!-- Altitude -->
+                <div class="card p-6 bg-white hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-500">
+                            <i data-lucide="mountain" size="18"></i>
+                        </div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-tight">Altitude</p>
+                    </div>
+                    <h3 id="altitude-val" class="text-3xl font-light text-slate-900">--<span class="text-sm text-slate-400 font-bold ml-1">m</span></h3>
+                </div>
+
+                <!-- Light Intensity -->
+                <div id="light-card" class="card p-6 bg-white hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center text-amber-500">
+                            <i data-lucide="sun" size="18"></i>
+                        </div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-tight">Light Intensity</p>
+                    </div>
+                    <h3 id="light-val" class="text-3xl font-light text-slate-900">--<span class="text-sm text-slate-400 font-bold ml-1">lx</span></h3>
+                </div>
+
+                <!-- Rainfall -->
+                <div class="card p-6 bg-white hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-cyan-50 rounded-xl flex items-center justify-center text-cyan-500">
+                            <i data-lucide="cloud-rain" size="18"></i>
+                        </div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-tight">Rainfall</p>
+                    </div>
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between items-center text-[10px] font-bold text-slate-400">
+                            <span>LEVEL</span>
+                            <span id="rainLevel-val" class="text-slate-900 italic font-bold">--</span>
+                        </div>
+                        <div class="flex justify-between items-center text-[10px] font-bold text-slate-400">
+                            <span>PERCENT</span>
+                            <span id="rainPercent-val" class="text-slate-900 font-bold">--%</span>
+                        </div>
+                        <div class="flex justify-between items-center text-[10px] font-bold text-slate-400">
+                            <span>DETECTED</span>
+                            <span id="rainDetected-val" class="text-slate-900 font-bold uppercase">--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Soil Conditions -->
+                <div id="soil-moisture-card" class="card p-6 bg-white hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
+                            <i data-lucide="shrub" size="18"></i>
+                        </div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-tight">Soil T/M</p>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-center flex-1 border-r border-slate-50">
+                            <p class="text-[8px] font-bold text-slate-300 uppercase mb-1">Temp</p>
+                            <p id="soilTemp-val" class="text-xl font-bold text-slate-900">--°C</p>
+                        </div>
+                        <div class="text-center flex-1">
+                            <p class="text-[8px] font-bold text-slate-300 uppercase mb-1">Moist</p>
+                            <p id="soilMoisture-val" class="text-xl font-bold text-slate-900">--%</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Motion Detected -->
+                <div id="motion-card" class="card p-6 bg-white hover:shadow-md transition-shadow flex flex-col justify-between">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400">
+                            <i data-lucide="scan-eye" size="18"></i>
+                        </div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-tight">Motion Detected</p>
+                    </div>
+                    <div class="flex items-center">
+                        <span id="motion-status" class="px-3 py-1 rounded-full text-[10px] font-black uppercase bg-slate-100 text-slate-400 tracking-widest">--</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch mb-12">
+            <!-- 2. Plant Health Overview -->
+            <div class="flex flex-col">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-1.5 h-6 bg-emerald-600 rounded-full"></div>
+                    <h2 class="text-xl font-bold text-slate-900 tracking-tight">Plant Health Overview</h2>
+                </div>
+                
+                <div id="plant-card" class="card flex-1 p-8 bg-white border border-slate-100 shadow-sm relative overflow-hidden flex flex-col justify-between">
+                    <div class="flex items-start justify-between mb-8">
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Plant Status</p>
+                            <h3 id="plantStatus-val" class="text-3xl font-black text-slate-900 uppercase italic tracking-tighter">--</h3>
+                        </div>
+                        <div id="plant-status-badge" class="px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-400 bg-slate-100">
+                            UNKNOWN
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-4 border-y border-slate-50 py-6 my-auto">
+                        <div class="text-center">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">Confidence</p>
+                            <p id="confidence-val" class="text-lg font-bold text-slate-900">--%</p>
+                        </div>
+                        <div class="text-center border-x border-slate-50">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">Unhealthy Score</p>
+                            <p id="unhealthyScore-val" class="text-lg font-bold text-slate-900">--</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">Abnormal</p>
+                            <p id="isAbnormal-val" class="text-lg font-bold text-slate-900">--</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 p-4 bg-slate-50 rounded-xl border border-slate-100 min-h-[64px] flex flex-col justify-center">
+                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Plant Alert</p>
+                        <p id="plant-alert-val" class="text-xs font-bold text-slate-600 italic">--</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. GPS Location Card -->
+            <div class="flex flex-col">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-1.5 h-6 bg-slate-900 rounded-full"></div>
+                    <h2 class="text-xl font-bold text-slate-900 tracking-tight">GPS Location</h2>
+                </div>
+                
+                <div class="card flex-1 p-8 bg-white border border-slate-100 shadow-sm flex flex-col justify-between">
+                    <div class="flex items-start justify-between mb-8">
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Global Positioning</p>
+                            <div id="gps-status-badge" class="mt-1 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-slate-400 bg-slate-100 inline-block">
+                                NO FIX
+                            </div>
+                        </div>
+                        <div class="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-slate-200">
+                            <i data-lucide="map-pin" size="20"></i>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-8 border-y border-slate-50 py-6 my-auto">
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Latitude</p>
+                            <p id="latitude-val" class="text-2xl font-mono text-slate-900 tracking-tighter">--.------</p>
+                        </div>
+                        <div class="border-l border-slate-50 pl-8">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Longitude</p>
+                            <p id="longitude-val" class="text-2xl font-mono text-slate-900 tracking-tighter">--.------</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 p-4 bg-slate-50 rounded-xl border border-slate-100 min-h-[64px] flex items-center justify-center">
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest text-center leading-tight">
+                            Satellite lock active on Field Nodes
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Initializing State Overlay -->
+        <div id="loading-overlay" class="fixed inset-0 z-50 bg-[#fdfdfb] flex flex-col items-center justify-center pointer-events-none transition-opacity duration-500">
+            <div class="relative w-24 h-24 mb-6">
+                <div class="absolute inset-0 border-4 border-emerald-100 rounded-full"></div>
+                <div class="absolute inset-0 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                <div class="absolute inset-0 flex items-center justify-center text-primary">
+                    <i data-lucide="tractor" size="32"></i>
+                </div>
+            </div>
+            <h2 class="text-xl font-bold text-slate-900 animate-pulse">Initializing AgriNova Live...</h2>
+            <p class="text-slate-400 text-sm mt-2 font-medium">Authenticating Secure Telemetry Stream</p>
+        </div>
+    </main>
+
+    <script type="module" src="./js/auth.js"></script>
+    <script type="module" src="./js/dashboard.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
